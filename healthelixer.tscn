@@ -1,0 +1,94 @@
+[gd_scene load_steps=8 format=3 uid="uid://ewl27pu2e3hx"]
+
+[ext_resource type="Script" path="res://healthelixer.gd" id="1_wi4b0"]
+[ext_resource type="Texture2D" uid="uid://nvi8486i411t" path="res://sprites/objects/objects.png" id="2_rt1r7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8sf08"]
+atlas = ExtResource("2_rt1r7")
+region = Rect2(147, 63, 12, 11)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nwkmo"]
+radius = 4.0
+height = 10.0
+
+[sub_resource type="Animation" id="Animation_71e6l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -7)]
+}
+
+[sub_resource type="Animation" id="Animation_ghwjy"]
+resource_name = "spawn"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -9), Vector2(0, -4.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fw3dt"]
+_data = {
+"RESET": SubResource("Animation_71e6l"),
+"spawn": SubResource("Animation_ghwjy")
+}
+
+[node name="healthelixer" type="Area2D" groups=["minimap_objects"]]
+collision_layer = 16
+collision_mask = 4
+script = ExtResource("1_wi4b0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -7)
+texture = SubResource("AtlasTexture_8sf08")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("CapsuleShape2D_nwkmo")
+disabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_fw3dt")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
