@@ -5,8 +5,10 @@ enum states {IDLE, CHASE, ATTACK, HURT, DEAD}
 var state = states.IDLE
 var player
 var health = 3
+var minimap_icon = "mob"
 @onready var startpos = global_position
 var alive = true
+signal removed
 
 
 func _physics_process(_delta):
@@ -21,6 +23,7 @@ func choose_action():
 			set_physics_process(false)
 			$CollisionShape2D.disabled = true
 			alive = false
+			removed.emit(self)
 		states.IDLE:
 			$AnimationPlayer.play("idle")
 			velocity= Vector2.ZERO

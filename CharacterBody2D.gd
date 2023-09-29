@@ -102,5 +102,3 @@ func healthelixer():
 	updatelives.emit(lives)
 
 
-func door():
-	global_position = Vector2(4,-17)
